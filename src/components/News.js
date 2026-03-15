@@ -1,15 +1,26 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
 import spinnerGif from './Spin@1x-1.0s-200px-200px.gif'
+import PropTypes from 'prop-types'
 
 export class News extends Component {
+  static defaultProps = {
+    country: 'in',
+    pageSize: 8,
+    category: 'top'
+  };
+
+  static propTypes = {
+    country: PropTypes.string,
+    pageSize: PropTypes.number,
+    category: PropTypes.string
+  };
+
   constructor(){
     super();
     this.state = {
       articles: [],
       loading: true,
-      page:1,
-      totalResults: 0,
       error: null
     }
   }
@@ -17,58 +28,16 @@ export class News extends Component {
   async componentDidMount(){
     try {
       this.setState({loading: true});
-      let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=3a99e00a05ce43e39ae8a49b61365462&page=1&pageSize=${this.props.pageSize || 20}`;
+      let url = `https://newsdata.io/api/1/news?apikey=pub_1a11100995944620a9fef0f1060b2048&country=${this.props.country}&category=${this.props.category.toLowerCase()}&size=${this.props.pageSize || 20}`;
       let Data = await fetch(url);
       if (!Data.ok) {
         throw new Error(`HTTP error! status: ${Data.status}`);
       }
       let parsedData = await Data.json()
-      this.setState({articles: parsedData.articles || [], totalResults: parsedData.totalResults || 0, loading: false});
+      this.setState({articles: parsedData.results || [], loading: false});
     } catch (error) {
-      console.error('Fetch error in componentDidMount:', error);
+      console.error('Fetch error:', error);
       this.setState({loading: false, error: 'Failed to load news. Please check your connection or try again.'});
-    }
-  }
-
-  handlePreviousClick = async () => {
-    try {
-      this.setState({loading: true});
-      let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=3a99e00a05ce43e39ae8a49b61365462&page=${this.state.page - 1}&pageSize=${this.props.pageSize || 20}`;
-      let Data = await fetch(url);
-      if (!Data.ok) {
-        throw new Error(`HTTP error! status: ${Data.status}`);
-      }
-      let parsedData = await Data.json()
-      this.setState({ 
-        page: this.state.page - 1,
-        articles: parsedData.articles || [],
-        loading: false
-      });
-    } catch (error) {
-      console.error('Fetch error in handlePreviousClick:', error);
-      this.setState({loading: false, error: 'Failed to load previous page.'});
-    }
-  }
-
-  handleNextClick = async () => {
-    if (!(this.state.page + 1 > Math.ceil(this.state.totalResults / (this.props.pageSize || 20)))) {
-      try {
-        this.setState({loading: true});
-        let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=3a99e00a05ce43e39ae8a49b61365462&page=${this.state.page + 1}&pageSize=${this.props.pageSize || 20}`;
-        let Data = await fetch(url);
-        if (!Data.ok) {
-          throw new Error(`HTTP error! status: ${Data.status}`);
-        }
-        let parsedData = await Data.json()
-        this.setState({ 
-          page: this.state.page + 1,
-          articles: parsedData.articles || [],
-          loading: false
-        });
-      } catch (error) {
-        console.error('Fetch error in handleNextClick:', error);
-        this.setState({loading: false, error: 'Failed to load next page.'});
-      }
     }
   }
 
@@ -89,21 +58,15 @@ export class News extends Component {
       <div className='container my-3'>
         <h1 className='text-center'>NewZy - Top Headlines</h1>
         <div className='row'>
-        {this.state.articles.map((element)=>{
-         return <div className='col-md-4' key={element.url}>
-         <NewsItem title={element.title?element.title.slice(0,45):""} description={element.description?element.description.slice(0,88):""} imageUrl={element.urlToImage} newsUrl={element.url}/>
+        {this.state.articles.map((element, index)=>{
+         return <div className='col-md-4' key={element.url || index}>
+         <NewsItem title={element.title?element.title.slice(0,45):""} description={element.description?element.description.slice(0,88):""} imageUrl={element.image_url} newsUrl={element.link}/>
         </div>
         })}
-
         </div>
-      <div className='container d-flex justify-content-between'>
-        <button disabled={this.state.page <= 1} type="button" className="btn btn-dark" onClick={this.handlePreviousClick}> &larr; Previous</button>
-        <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / (this.props.pageSize || 20))} type="button" className="btn btn-dark" onClick={this.handleNextClick}>Next &rarr;</button>
-      </div>
       </div>
     )
   }
 }
 
 export default News
-

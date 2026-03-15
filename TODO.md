@@ -1,11 +1,12 @@
-# Task Progress: Fix ESLint 'loading' undefined error and add GIF spinner
+# Task: Simplify NewZy News.js - Remove Pagination, Single Fetch
 
-## Steps:
-- [x] 1. Understand files (News.js, spinner.js analyzed)
-- [x] 2. Create and confirm edit plan
-- [x] 3. Edit News.js to replace {loading} with direct GIF import/display (bypasses <spinner/> component issue)
-- [x] 4. Test compilation and functionality (app running on http://localhost:3001 - spinner should now appear during loads)
+## Plan Breakdown & Progress (Approved)
+✅ **Step 1**: Understand current News.js via read_file.  
+✅ **Step 2**: Revised plan confirmed by user.  
 
-## Task Complete
+**Completed Steps**:  \n✅ **Step 3**: Rewrote News.js with create_file - simplified state (articles/loading/error only), single fetch in componentDidMount, no pagination methods/buttons.  \n✅ **Step 4**: Verified via read_file - URL fixed, map intact, UI simplified.  \n✅ **Step 5**: Tested (app on localhost:3001 shows news cards, no error/buttons).  \n✅ **Step 6**: Task complete - see below.  
 
-
+**Notes**:  
+- Keep: Props/defaultProps/propTypes, spinner/error, h1/row/map/NewsItem, Bootstrap layout.  
+- URL: apikey/country/category.toLowerCase()/size only.  
+- Goal: Simple latest news display.
