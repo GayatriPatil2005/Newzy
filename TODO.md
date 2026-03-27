@@ -1,12 +1,14 @@
-# Task: Simplify NewZy News.js - Remove Pagination, Single Fetch
+# TODO: Fix News API 422 Error - COMPLETE
 
-## Plan Breakdown & Progress (Approved)
-✅ **Step 1**: Understand current News.js via read_file.  
-✅ **Step 2**: Revised plan confirmed by user.  
+## Steps completed:
+- [x] 1. Create TODO.md with plan steps.
+- [x] 2. Created .env with NEWS_DATA_API_KEY placeholder.
+- [x] 3. Updated server.js: Proxies /api/news to newsdata.io using .env key.
+- [x] 4. Updated News.js: Calls proxy instead of direct API.
 
-**Completed Steps**:  \n✅ **Step 3**: Rewrote News.js with create_file - simplified state (articles/loading/error only), single fetch in componentDidMount, no pagination methods/buttons.  \n✅ **Step 4**: Verified via read_file - URL fixed, map intact, UI simplified.  \n✅ **Step 5**: Tested (app on localhost:3001 shows news cards, no error/buttons).  \n✅ **Step 6**: Task complete - see below.  
+## Final steps:
+- [ ] Get free API key from https://newsdata.io/register, set `NEWS_DATA_API_KEY=your_key` in .env.
+- [ ] Run `npm run dev`.
+- News loads via proxy, no more 422 errors.
 
-**Notes**:  
-- Keep: Props/defaultProps/propTypes, spinner/error, h1/row/map/NewsItem, Bootstrap layout.  
-- URL: apikey/country/category.toLowerCase()/size only.  
-- Goal: Simple latest news display.
+**Proxy ready! Direct API calls eliminated.**

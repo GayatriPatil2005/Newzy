@@ -28,7 +28,7 @@ export class News extends Component {
   async componentDidMount(){
     try {
       this.setState({loading: true});
-      let url = `https://newsdata.io/api/1/news?apikey=pub_1a11100995944620a9fef0f1060b2048&country=${this.props.country}&category=${this.props.category.toLowerCase()}&size=${this.props.pageSize || 20}`;
+      let url = `http://localhost:5000/api/news?country=${this.props.country}&category=${this.props.category.toLowerCase()}&size=${this.props.pageSize || 20}`;
       let Data = await fetch(url);
       if (!Data.ok) {
         throw new Error(`HTTP error! status: ${Data.status}`);
